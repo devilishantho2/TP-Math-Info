@@ -117,8 +117,24 @@ def saisie_mouvement(rubik):
 
 # permet la saisie d'une suite de mouvements à effectuer		
 # renvoie toujours une liste de tuples valide (f, sens, double) : l'utilisateur est invité à recommencer sa saisie tant que celle-ci est invalide
-def saisie_mouvements():
+def saisie_mouvements(rubik):
 	
-	return
-	
-	
+    m = input('Entrez la rotation à effectuer (F|L|R|U|D|B)') #F'2 ou F2 ou F
+    L = m.split(" ")
+
+    for e in L:
+
+        if len(e)==1:
+            appliquer_rotation(rubik,e)
+            
+        if len(e)==2:
+            print('test')
+            if e[1]=="'":
+                for k in range(3): appliquer_rotation(rubik,e[0]) 
+            if e[1]=='2':
+                for k in range(2): appliquer_rotation(rubik,e[0])
+        
+        if len(e)==3:
+            for k in range(2): appliquer_rotation(rubik,e[0])
+            
+    afficher_rubik(rubik)

@@ -10,4 +10,4 @@ rubik = generer_rubik_termine()
 print(afficher_rubik(rubik))
 
 while run:
-	saisie_mouvement(rubik)
+	saisie_mouvements(rubik)
