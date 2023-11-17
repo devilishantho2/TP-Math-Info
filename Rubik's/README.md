@@ -1,4 +1,4 @@
-Projet d'informatique Arts et Métiers 2023-2024
+# Projet d'informatique Arts et Métiers 2023-2024
 constantes.py           -> Constantes du projet
 fonctions_consoles.py   -> Fonctions en relations avec l'utilisateur
 fonctions_debug.py      -> Fonctions debug
