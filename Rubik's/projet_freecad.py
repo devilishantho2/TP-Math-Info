@@ -9,6 +9,32 @@ import Draft # voir la méthode Draft.rotate()
 # API pour l'Interface Utilisateur
 from PySide2 import QtCore, QtGui, QtWidgets
 
+doc = FreeCAD.ActiveDocument
+doc = FreeCAD.newDocument()
+
+rubik = generer_rubik_termine()
+clr = {"red":(1.0,0.0,0.0),"green":(0.0,1.0,0.0),"blue":(0.0,0.0,1.0),"yellow":(1.0,0.835,0.0),"orange":(1.0,0.349,0.0),"white":(1.0,1.0,1.0),"black":(0.0,0.0,0.0)}
+
+rubik_3d = []
+
+for z in range(TAILLE):
+	rubik_3d.append([])
+for y in range(TAILLE):
+	for z in range(TAILLE):
+		rubik_3d[y].append([])
+for x in range(TAILLE):
+	for y in range(TAILLE):
+		for z in range(TAILLE):
+			rubik_3d[x][y].append(doc.addObject("Part::Box","Cube"))
+for x in range(TAILLE):
+	for y in range(TAILLE):
+		for z in range(TAILLE):
+			rubik_3d[x][y][z].Length = 1
+			rubik_3d[x][y][z].Width = 1
+			rubik_3d[x][y][z].Height = 1
+			rubik_3d[x][y][z].Placement = App.Placement(App.Vector(x,y,z),App.Rotation(0,0,0,1))
+			rubik_3d[x][y][z].ViewObject.DiffuseColor=[clr["yellow"],clr["orange"],clr["green"],clr["white"],clr["blue"],clr["red"]]
+
 # applique un mouvement sur une face du cube (logique + objets 3D)
 # rubik : le cube logique
 # rubik_objects : les objets FreeCAD du cube 3D
@@ -62,3 +88,5 @@ ui = TestWidget()
 ui.init(dock)
 window = QtWidgets.QApplication.activeWindow()
 window.addDockWidget(QtCore.Qt.RightDockWidgetArea, dock)
+
+Gui.SendMsgToActiveView("ViewFit")
