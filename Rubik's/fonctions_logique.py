@@ -2,6 +2,7 @@
 ## génération du cube, mélange, application des mouvements, vérifications de victoire, etc. ## 
 
 from constantes import *
+from fonctions_debug import *
 
 import random
 import copy
@@ -82,13 +83,13 @@ def c(cubelet,f):
 def extraire(rubik, f):
 	
 	if f=="U":
-		return [[rubik[x][y][TAILLE-1] for x in range(TAILLE)] for y in range(TAILLE)]
+		return [[rubik[x][y][TAILLE-1] for y in range(TAILLE)] for x in range(TAILLE)]
 		
 	if f=="L":	
 		return [[rubik[0][y][z] for z in range(TAILLE)] for y in range(TAILLE)]
 		
 	if f=="F":
-		return [[rubik[x][0][z] for z in range(TAILLE)] for x in range(TAILLE)]
+		return [[rubik[x][0][z] for x in range(TAILLE)] for z in range(TAILLE)]
 		
 	if f=="R":
 		return [[rubik[TAILLE-1][y][z] for z in range(TAILLE)] for y in range(TAILLE)]
@@ -97,7 +98,7 @@ def extraire(rubik, f):
 		return [[rubik[x][TAILLE-1][z] for z in range(TAILLE)] for x in range(TAILLE)]
 		
 	if f=="D":
-		return [[rubik[x][y][0] for x in range(TAILLE)] for y in range(TAILLE)]
+		return [[rubik[x][y][0] for y in range(TAILLE)] for x in range(TAILLE)]
 
 	
 # applique une rotation à la face passée en paramètre
@@ -111,11 +112,11 @@ def appliquer_rotation(rubik, face, sens=True, double=False):
 		F = extraire(rubik,"F")
 		for x in range(TAILLE):
 			for z in range(TAILLE):
-				rubik[x][0][z] = F[TAILLE-1-z][x]
+				rubik[x][0][z] = F[x][TAILLE-1-z]
 		for x in range(TAILLE):
 			for z in range(TAILLE):
 				rubik[x][0][z] = rubik[x][0][z][2:]+rubik[x][0][z][1:2]+rubik[x][0][z][:1]
-				
+    
 	if face=="L":
 		F = extraire(rubik,"L")
 		for y in range(TAILLE):
@@ -138,7 +139,7 @@ def appliquer_rotation(rubik, face, sens=True, double=False):
 		F = extraire(rubik,"U")
 		for x in range(TAILLE):
 			for y in range(TAILLE):
-				rubik[TAILLE-1-x][TAILLE-1-y][TAILLE-1] = F[TAILLE-1-x][y]
+				rubik[TAILLE-1-x][TAILLE-1-y][TAILLE-1] = F[y][TAILLE-1-x]
 		for x in range(TAILLE):
 			for y in range(TAILLE):
 				rubik[x][y][TAILLE-1] = rubik[x][y][TAILLE-1][:1]+rubik[x][y][TAILLE-1][2:]+rubik[x][y][TAILLE-1][1:2]
@@ -147,7 +148,7 @@ def appliquer_rotation(rubik, face, sens=True, double=False):
 		F = extraire(rubik,"D")
 		for x in range(TAILLE):
 			for y in range(TAILLE):
-				rubik[x][y][0] = F[TAILLE-1-x][y]
+				rubik[x][y][0] = F[y][TAILLE-1-x]
 		for x in range(TAILLE):
 			for y in range(TAILLE):
 				rubik[x][y][0] = rubik[x][y][0][:1]+rubik[x][y][0][2:]+rubik[x][y][0][1:2]
@@ -156,11 +157,11 @@ def appliquer_rotation(rubik, face, sens=True, double=False):
 		F = extraire(rubik,"B")
 		for x in range(TAILLE):
 			for z in range(TAILLE):
-				rubik[TAILLE-1-x][TAILLE-1][TAILLE-1-z] = F[TAILLE-1-z][x]
+				rubik[x][TAILLE-1][z] = F[z][TAILLE-1-x]
 		for x in range(TAILLE):
 			for z in range(TAILLE):
 				rubik[x][TAILLE-1][z] = rubik[x][TAILLE-1][z][2:]+rubik[x][TAILLE-1][z][1:2]+rubik[x][TAILLE-1][z][:1]
-	
+    
 # renvoie True si la face est terminée
 # face : matrice 2D de cubelets
 # f : caractère (U,L,F,R,B,D)
