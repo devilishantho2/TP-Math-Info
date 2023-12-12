@@ -284,56 +284,130 @@ class Widget(object):
 	def init(self,parent):
 		parent.setWindowTitle("Test IU")
 		
-		self.wExemple = QtWidgets.QWidget(parent)
-		self.wExemple.setGeometry(QtCore.QRect(0, 25, 200, 200))
+		self.w = QtWidgets.QWidget(parent)
+		self.w.setGeometry(QtCore.QRect(0, 25, 400, 200))
 
 		# QT fonctionne sur le principe des layouts pour la présentation des éléments (voir doc)
 		# ici un layout vertical ordonne les éléments en colonne
-		self.vlExemple = QtWidgets.QVBoxLayout(self.wExemple)
+		self.vlExemple = QtWidgets.QGridLayout(self.w)
 
 		# un label est un texte affiché
-		self.lbExemple = QtWidgets.QLabel(self.wExemple)
-		self.lbExemple.setText("Choisissez un mouvement")
-		self.vlExemple.addWidget(self.lbExemple)
+		self.lbExemple = QtWidgets.QLabel(self.w)
+		self.lbExemple.setText("Rotations")
+		self.vlExemple.addWidget(self.lbExemple,0,0)
 		
-		# un bouton est connecté à une méthode (ici, exemple())
-		self.TurnUpB= QtWidgets.QPushButton(self.wExemple)
+		#ROTATIONS
+		self.TurnUpB= QtWidgets.QPushButton(self.w)
 		self.TurnUpB.setEnabled(True)
 		self.TurnUpB.setText("U")
 		self.TurnUpB.clicked.connect(self.TurnUp)
-		self.vlExemple.addWidget(self.TurnUpB)
+		self.vlExemple.addWidget(self.TurnUpB,1,0)
 
-		self.TurnDownB= QtWidgets.QPushButton(self.wExemple)
+		self.TurnDownB= QtWidgets.QPushButton(self.w)
 		self.TurnDownB.setEnabled(True)
 		self.TurnDownB.setText("D")
 		self.TurnDownB.clicked.connect(self.TurnDown)
-		self.vlExemple.addWidget(self.TurnDownB)
+		self.vlExemple.addWidget(self.TurnDownB,1,1)
 
-		self.TurnFrontB= QtWidgets.QPushButton(self.wExemple)
+		self.TurnFrontB= QtWidgets.QPushButton(self.w)
 		self.TurnFrontB.setEnabled(True)
 		self.TurnFrontB.setText("F")
 		self.TurnFrontB.clicked.connect(self.TurnFront)
-		self.vlExemple.addWidget(self.TurnFrontB)
+		self.vlExemple.addWidget(self.TurnFrontB,1,2)
 
-		self.TurnBackB= QtWidgets.QPushButton(self.wExemple)
+		self.TurnBackB= QtWidgets.QPushButton(self.w)
 		self.TurnBackB.setEnabled(True)
 		self.TurnBackB.setText("B")
 		self.TurnBackB.clicked.connect(self.TurnBack)
-		self.vlExemple.addWidget(self.TurnBackB)
+		self.vlExemple.addWidget(self.TurnBackB,1,3)
 
-		self.TurnLeftB= QtWidgets.QPushButton(self.wExemple)
+		self.TurnLeftB= QtWidgets.QPushButton(self.w)
 		self.TurnLeftB.setEnabled(True)
 		self.TurnLeftB.setText("L")
 		self.TurnLeftB.clicked.connect(self.TurnLeft)
-		self.vlExemple.addWidget(self.TurnLeftB)
+		self.vlExemple.addWidget(self.TurnLeftB,1,4)
 
-		self.TurnRightB= QtWidgets.QPushButton(self.wExemple)
+		self.TurnRightB= QtWidgets.QPushButton(self.w)
 		self.TurnRightB.setEnabled(True)
 		self.TurnRightB.setText("R")
 		self.TurnRightB.clicked.connect(self.TurnRight)
-		self.vlExemple.addWidget(self.TurnRightB)
+		self.vlExemple.addWidget(self.TurnRightB,1,5)
 
-	# la méthode appelée lors d'un clic sur le bouton exemple
+		#ROTATIONS INVERSE
+		self.TurnUpB= QtWidgets.QPushButton(self.w)
+		self.TurnUpB.setEnabled(True)
+		self.TurnUpB.setText("U'")
+		self.TurnUpB.clicked.connect(self.TurnUpI)
+		self.vlExemple.addWidget(self.TurnUpB,2,0)
+
+		self.TurnDownB= QtWidgets.QPushButton(self.w)
+		self.TurnDownB.setEnabled(True)
+		self.TurnDownB.setText("D'")
+		self.TurnDownB.clicked.connect(self.TurnDownI)
+		self.vlExemple.addWidget(self.TurnDownB,2,1)
+
+		self.TurnFrontB= QtWidgets.QPushButton(self.w)
+		self.TurnFrontB.setEnabled(True)
+		self.TurnFrontB.setText("F'")
+		self.TurnFrontB.clicked.connect(self.TurnFrontI)
+		self.vlExemple.addWidget(self.TurnFrontB,2,2)
+
+		self.TurnBackB= QtWidgets.QPushButton(self.w)
+		self.TurnBackB.setEnabled(True)
+		self.TurnBackB.setText("B'")
+		self.TurnBackB.clicked.connect(self.TurnBackI)
+		self.vlExemple.addWidget(self.TurnBackB,2,3)
+
+		self.TurnLeftB= QtWidgets.QPushButton(self.w)
+		self.TurnLeftB.setEnabled(True)
+		self.TurnLeftB.setText("L'")
+		self.TurnLeftB.clicked.connect(self.TurnLeftI)
+		self.vlExemple.addWidget(self.TurnLeftB,2,4)
+
+		self.TurnRightB= QtWidgets.QPushButton(self.w)
+		self.TurnRightB.setEnabled(True)
+		self.TurnRightB.setText("R'")
+		self.TurnRightB.clicked.connect(self.TurnRightI)
+		self.vlExemple.addWidget(self.TurnRightB,2,5)
+
+		#ROTATIONS DOUBLE
+		self.TurnUpB= QtWidgets.QPushButton(self.w)
+		self.TurnUpB.setEnabled(True)
+		self.TurnUpB.setText("U2")
+		self.TurnUpB.clicked.connect(self.TurnUp2)
+		self.vlExemple.addWidget(self.TurnUpB,3,0)
+
+		self.TurnDownB= QtWidgets.QPushButton(self.w)
+		self.TurnDownB.setEnabled(True)
+		self.TurnDownB.setText("D2")
+		self.TurnDownB.clicked.connect(self.TurnDown2)
+		self.vlExemple.addWidget(self.TurnDownB,3,1)
+
+		self.TurnFrontB= QtWidgets.QPushButton(self.w)
+		self.TurnFrontB.setEnabled(True)
+		self.TurnFrontB.setText("F2")
+		self.TurnFrontB.clicked.connect(self.TurnFront2)
+		self.vlExemple.addWidget(self.TurnFrontB,3,2)
+
+		self.TurnBackB= QtWidgets.QPushButton(self.w)
+		self.TurnBackB.setEnabled(True)
+		self.TurnBackB.setText("B2")
+		self.TurnBackB.clicked.connect(self.TurnBack2)
+		self.vlExemple.addWidget(self.TurnBackB,3,3)
+
+		self.TurnLeftB= QtWidgets.QPushButton(self.w)
+		self.TurnLeftB.setEnabled(True)
+		self.TurnLeftB.setText("L2")
+		self.TurnLeftB.clicked.connect(self.TurnLeft2)
+		self.vlExemple.addWidget(self.TurnLeftB,3,4)
+
+		self.TurnRightB= QtWidgets.QPushButton(self.w)
+		self.TurnRightB.setEnabled(True)
+		self.TurnRightB.setText("R2")
+		self.TurnRightB.clicked.connect(self.TurnRight2)
+		self.vlExemple.addWidget(self.TurnRightB,3,5)
+
+	# la méthode appelée lors d'un clD(ic sur le bouton exemple
 	def TurnUp(self):
 		appliquer_mouvement_3D(rubik_3d,("U",True,False),True)
 
@@ -351,6 +425,44 @@ class Widget(object):
 
 	def TurnRight(self):
 		appliquer_mouvement_3D(rubik_3d,("R",True,False),True)
+
+
+	def TurnUpI(self):
+		appliquer_mouvement_3D(rubik_3d,("U",False,False),True)
+
+	def TurnDownI(self):
+		appliquer_mouvement_3D(rubik_3d,("D",False,False),True)
+
+	def TurnFrontI(self):
+		appliquer_mouvement_3D(rubik_3d,("F",False,False),True)
+
+	def TurnBackI(self):
+		appliquer_mouvement_3D(rubik_3d,("B",False,False),True)
+
+	def TurnLeftI(self):
+		appliquer_mouvement_3D(rubik_3d,("L",False,False),True)
+
+	def TurnRightI(self):
+		appliquer_mouvement_3D(rubik_3d,("R",False,False),True)
+
+
+	def TurnUp2(self):
+		appliquer_mouvement_3D(rubik_3d,("U",True,True),True)
+
+	def TurnDown2(self):
+		appliquer_mouvement_3D(rubik_3d,("D",True,True),True)
+
+	def TurnFront2(self):
+		appliquer_mouvement_3D(rubik_3d,("F",True,True),True)
+
+	def TurnBack2(self):
+		appliquer_mouvement_3D(rubik_3d,("B",True,True),True)
+
+	def TurnLeft2(self):
+		appliquer_mouvement_3D(rubik_3d,("L",True,True),True)
+
+	def TurnRight2(self):
+		appliquer_mouvement_3D(rubik_3d,("R",True,True),True)
 
 # exemple de création d'un dock QT contenant notre IU
 # voir la documentation FreeCAD / QT-GUI
