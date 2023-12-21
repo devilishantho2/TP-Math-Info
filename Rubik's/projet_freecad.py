@@ -7,7 +7,8 @@ from fonctions_logique import *
 import Draft # voir la méthode Draft.rotate()
 
 # API pour l'Interface Utilisateur
-from PySide2 import QtCore, QtGui, QtWidgets
+from PySide import QtCore, QtGui, QtWidgets
+import FreeCADGui
 
 doc = FreeCAD.ActiveDocument
 doc = FreeCAD.newDocument()
@@ -17,6 +18,7 @@ clr = {"R":(1.0,0.0,0.0),"G":(0.0,1.0,0.0),"B":(0.0,0.0,1.0),"Y":(1.0,0.835,0.0)
 
 rubik_3d,rubik_3d_copie = [],[]
 v = 6
+n_melange = 0
 			
 def init_rubik(rubik):
 	for z in range(TAILLE):
@@ -62,7 +64,7 @@ def copier_rubik_3d(rubik_3d):
 
 # applique un mouvement sur une face du cube (logique + objets 3D)
 # rubik : le cube logique
-# rubik_objects : les objets FreeCAD du cube 3D
+# rubik_3ds : les objets FreeCAD du cube 3D
 # mouv : tuple (f, sens, double) du mouvement à effectuer
 # animation : True pour afficher l'animation correspondante
 def appliquer_mouvement_3D(rubik_3d,mouv,animation=True):
@@ -277,200 +279,247 @@ def appliquer_mouvement_3D(rubik_3d,mouv,animation=True):
 	
 			update_rubik(rubik)
 
-# Un exemple basique d'interface utilisateur
-class Widget(object):
-
-	# initialiser l'IU
-	def init(self,parent):
-		parent.setWindowTitle("Test IU")
-		
-		self.w = QtWidgets.QWidget(parent)
-		self.w.setGeometry(QtCore.QRect(0, 25, 400, 200))
-
-		# QT fonctionne sur le principe des layouts pour la présentation des éléments (voir doc)
-		# ici un layout vertical ordonne les éléments en colonne
-		self.vlExemple = QtWidgets.QGridLayout(self.w)
-
-		# un label est un texte affiché
-		self.lbExemple = QtWidgets.QLabel(self.w)
-		self.lbExemple.setText("Rotations")
-		self.vlExemple.addWidget(self.lbExemple,0,0)
-		
-		#ROTATIONS
-		self.TurnUpB= QtWidgets.QPushButton(self.w)
-		self.TurnUpB.setEnabled(True)
-		self.TurnUpB.setText("U")
-		self.TurnUpB.clicked.connect(self.TurnUp)
-		self.vlExemple.addWidget(self.TurnUpB,1,0)
-
-		self.TurnDownB= QtWidgets.QPushButton(self.w)
-		self.TurnDownB.setEnabled(True)
-		self.TurnDownB.setText("D")
-		self.TurnDownB.clicked.connect(self.TurnDown)
-		self.vlExemple.addWidget(self.TurnDownB,1,1)
-
-		self.TurnFrontB= QtWidgets.QPushButton(self.w)
-		self.TurnFrontB.setEnabled(True)
-		self.TurnFrontB.setText("F")
-		self.TurnFrontB.clicked.connect(self.TurnFront)
-		self.vlExemple.addWidget(self.TurnFrontB,1,2)
-
-		self.TurnBackB= QtWidgets.QPushButton(self.w)
-		self.TurnBackB.setEnabled(True)
-		self.TurnBackB.setText("B")
-		self.TurnBackB.clicked.connect(self.TurnBack)
-		self.vlExemple.addWidget(self.TurnBackB,1,3)
-
-		self.TurnLeftB= QtWidgets.QPushButton(self.w)
-		self.TurnLeftB.setEnabled(True)
-		self.TurnLeftB.setText("L")
-		self.TurnLeftB.clicked.connect(self.TurnLeft)
-		self.vlExemple.addWidget(self.TurnLeftB,1,4)
-
-		self.TurnRightB= QtWidgets.QPushButton(self.w)
-		self.TurnRightB.setEnabled(True)
-		self.TurnRightB.setText("R")
-		self.TurnRightB.clicked.connect(self.TurnRight)
-		self.vlExemple.addWidget(self.TurnRightB,1,5)
-
-		#ROTATIONS INVERSE
-		self.TurnUpB= QtWidgets.QPushButton(self.w)
-		self.TurnUpB.setEnabled(True)
-		self.TurnUpB.setText("U'")
-		self.TurnUpB.clicked.connect(self.TurnUpI)
-		self.vlExemple.addWidget(self.TurnUpB,2,0)
-
-		self.TurnDownB= QtWidgets.QPushButton(self.w)
-		self.TurnDownB.setEnabled(True)
-		self.TurnDownB.setText("D'")
-		self.TurnDownB.clicked.connect(self.TurnDownI)
-		self.vlExemple.addWidget(self.TurnDownB,2,1)
-
-		self.TurnFrontB= QtWidgets.QPushButton(self.w)
-		self.TurnFrontB.setEnabled(True)
-		self.TurnFrontB.setText("F'")
-		self.TurnFrontB.clicked.connect(self.TurnFrontI)
-		self.vlExemple.addWidget(self.TurnFrontB,2,2)
-
-		self.TurnBackB= QtWidgets.QPushButton(self.w)
-		self.TurnBackB.setEnabled(True)
-		self.TurnBackB.setText("B'")
-		self.TurnBackB.clicked.connect(self.TurnBackI)
-		self.vlExemple.addWidget(self.TurnBackB,2,3)
-
-		self.TurnLeftB= QtWidgets.QPushButton(self.w)
-		self.TurnLeftB.setEnabled(True)
-		self.TurnLeftB.setText("L'")
-		self.TurnLeftB.clicked.connect(self.TurnLeftI)
-		self.vlExemple.addWidget(self.TurnLeftB,2,4)
-
-		self.TurnRightB= QtWidgets.QPushButton(self.w)
-		self.TurnRightB.setEnabled(True)
-		self.TurnRightB.setText("R'")
-		self.TurnRightB.clicked.connect(self.TurnRightI)
-		self.vlExemple.addWidget(self.TurnRightB,2,5)
-
-		#ROTATIONS DOUBLE
-		self.TurnUpB= QtWidgets.QPushButton(self.w)
-		self.TurnUpB.setEnabled(True)
-		self.TurnUpB.setText("U2")
-		self.TurnUpB.clicked.connect(self.TurnUp2)
-		self.vlExemple.addWidget(self.TurnUpB,3,0)
-
-		self.TurnDownB= QtWidgets.QPushButton(self.w)
-		self.TurnDownB.setEnabled(True)
-		self.TurnDownB.setText("D2")
-		self.TurnDownB.clicked.connect(self.TurnDown2)
-		self.vlExemple.addWidget(self.TurnDownB,3,1)
-
-		self.TurnFrontB= QtWidgets.QPushButton(self.w)
-		self.TurnFrontB.setEnabled(True)
-		self.TurnFrontB.setText("F2")
-		self.TurnFrontB.clicked.connect(self.TurnFront2)
-		self.vlExemple.addWidget(self.TurnFrontB,3,2)
-
-		self.TurnBackB= QtWidgets.QPushButton(self.w)
-		self.TurnBackB.setEnabled(True)
-		self.TurnBackB.setText("B2")
-		self.TurnBackB.clicked.connect(self.TurnBack2)
-		self.vlExemple.addWidget(self.TurnBackB,3,3)
-
-		self.TurnLeftB= QtWidgets.QPushButton(self.w)
-		self.TurnLeftB.setEnabled(True)
-		self.TurnLeftB.setText("L2")
-		self.TurnLeftB.clicked.connect(self.TurnLeft2)
-		self.vlExemple.addWidget(self.TurnLeftB,3,4)
-
-		self.TurnRightB= QtWidgets.QPushButton(self.w)
-		self.TurnRightB.setEnabled(True)
-		self.TurnRightB.setText("R2")
-		self.TurnRightB.clicked.connect(self.TurnRight2)
-		self.vlExemple.addWidget(self.TurnRightB,3,5)
-
-	# la méthode appelée lors d'un clD(ic sur le bouton exemple
-	def TurnUp(self):
-		appliquer_mouvement_3D(rubik_3d,("U",True,False),True)
-
-	def TurnDown(self):
-		appliquer_mouvement_3D(rubik_3d,("D",True,False),True)
-
-	def TurnFront(self):
-		appliquer_mouvement_3D(rubik_3d,("F",True,False),True)
-
-	def TurnBack(self):
-		appliquer_mouvement_3D(rubik_3d,("B",True,False),True)
-
-	def TurnLeft(self):
-		appliquer_mouvement_3D(rubik_3d,("L",True,False),True)
-
-	def TurnRight(self):
-		appliquer_mouvement_3D(rubik_3d,("R",True,False),True)
 
 
-	def TurnUpI(self):
-		appliquer_mouvement_3D(rubik_3d,("U",False,False),True)
+class TestDialog(QtGui.QDialog):
 
-	def TurnDownI(self):
-		appliquer_mouvement_3D(rubik_3d,("D",False,False),True)
+    def generer(self):
+        global TAILLE, init_rubik, update_rubik, rubik, generer_rubik_termine
+        rubik = generer_rubik_termine()
+        init_rubik(rubik)
+        update_rubik(rubik)
+        Gui.SendMsgToActiveView("ViewFit")
+        Gui.ActiveDocument.ActiveView.viewIsometric()
 
-	def TurnFrontI(self):
-		appliquer_mouvement_3D(rubik_3d,("F",False,False),True)
+    def supprimer(self):
+        global rubik, rubik_3d
+        rubik = []
+        for obj in doc.Objects:
+            doc.removeObject(obj.Name)
+        rubik_3d = []
 
-	def TurnBackI(self):
-		appliquer_mouvement_3D(rubik_3d,("B",False,False),True)
+    def TailleChanged(self,t):
+        global TAILLE
+        TAILLE = t
 
-	def TurnLeftI(self):
-		appliquer_mouvement_3D(rubik_3d,("L",False,False),True)
+    def NMChanged(self,n):
+        global n_melange
+        n_melange = n
 
-	def TurnRightI(self):
-		appliquer_mouvement_3D(rubik_3d,("R",False,False),True)
+    def scramble(self):
+        melange,melange_texte = melanger(n_melange)
+        print(melange_texte)
+        for e in melange:
+            appliquer_mouvement_3D(rubik_3d,e,True)
 
+    def __init__(self):
 
-	def TurnUp2(self):
-		appliquer_mouvement_3D(rubik_3d,("U",True,True),True)
+        super(TestDialog, self).__init__()
 
-	def TurnDown2(self):
-		appliquer_mouvement_3D(rubik_3d,("D",True,True),True)
+        # Définir la variable a
+        a = 1  # Vous pouvez définir la valeur initiale de "a" ici
 
-	def TurnFront2(self):
-		appliquer_mouvement_3D(rubik_3d,("F",True,True),True)
+        # Créer un QTabWidget
+        tab_widget = QtGui.QTabWidget(self)
 
-	def TurnBack2(self):
-		appliquer_mouvement_3D(rubik_3d,("B",True,True),True)
+        # Onglet 1
+        tab1 = QtGui.QWidget()
 
-	def TurnLeft2(self):
-		appliquer_mouvement_3D(rubik_3d,("L",True,True),True)
+        # Créer un layout vertical dans l'onglet 1
+        vertical_layout1 = QtGui.QVBoxLayout(tab1)
 
-	def TurnRight2(self):
-		appliquer_mouvement_3D(rubik_3d,("R",True,True),True)
+        # Créer une QGroupBox pour accueillir le layout vertical
+        generation_group_box = QtGui.QGroupBox('Génération', self)
 
-# exemple de création d'un dock QT contenant notre IU
-# voir la documentation FreeCAD / QT-GUI
-dock = QtWidgets.QDockWidget() 
-ui = Widget()
-ui.init(dock)
-window = QtWidgets.QApplication.activeWindow()
-window.addDockWidget(QtCore.Qt.RightDockWidgetArea, dock)
+        # Créer un layout vertical dans la QGroupBox
+        generation_layout = QtGui.QVBoxLayout()
+
+        # HLayout avec un label "Taille" et une spinbox
+        hlayout1 = QtGui.QHBoxLayout()
+        label1 = QtGui.QLabel('Taille', self)
+        spinbox1 = QtGui.QSpinBox(self)
+        spinbox1.setMinimum(0)
+        spinbox1.valueChanged.connect(lambda: self.TailleChanged(spinbox1.value()))
+
+        hlayout1.addWidget(label1)
+        hlayout1.addWidget(spinbox1)
+        generation_layout.addLayout(hlayout1)
+
+        # Label "Mélange"
+        label2 = QtGui.QLabel('Mélange', self)
+        generation_layout.addWidget(label2)
+
+        # HLayout avec un label "Nombre de mouvements" et une spinbox
+        hlayout2 = QtGui.QHBoxLayout()
+        label3 = QtGui.QLabel('Nombre de mouvements', self)
+        spinbox2 = QtGui.QSpinBox(self)
+        spinbox2.setMinimum(0)
+        spinbox2.valueChanged.connect(lambda: self.NMChanged(spinbox2.value()))
+        hlayout2.addWidget(label3)
+        hlayout2.addWidget(spinbox2)
+        generation_layout.addLayout(hlayout2)
+
+        # HLayout avec un label "ou scramble" et une zone de texte
+        hlayout3 = QtGui.QHBoxLayout()
+        label4 = QtGui.QLabel('ou scramble', self)
+        line_edit = QtGui.QLineEdit(self)
+        hlayout3.addWidget(label4)
+        hlayout3.addWidget(line_edit)
+        generation_layout.addLayout(hlayout3)
+
+        # Trois boutons avec les nouveaux noms
+        button1 = QtGui.QPushButton('Générer le cube', self)
+        button1.clicked.connect(lambda: self.generer())
+        button2 = QtGui.QPushButton('Scramble', self)
+        button2.clicked.connect(lambda: self.scramble())
+        button3 = QtGui.QPushButton('Supprimer le cube', self)
+        button3.clicked.connect(lambda: self.supprimer())
+        generation_layout.addWidget(button1)
+
+        # HLayout pour les boutons "Save" et "Load"
+        hlayout_buttons = QtGui.QHBoxLayout()
+        button_save = QtGui.QPushButton('Save', self)
+        button_load = QtGui.QPushButton('Load', self)
+        hlayout_buttons.addWidget(button_save)
+        hlayout_buttons.addWidget(button_load)
+        generation_layout.addLayout(hlayout_buttons)
+
+        generation_layout.addWidget(button2)
+        generation_layout.addWidget(button3)
+
+        # Ajouter le layout vertical à la QGroupBox
+        generation_group_box.setLayout(generation_layout)
+
+        # Ajouter la QGroupBox au layout vertical de l'onglet 1
+        vertical_layout1.addWidget(generation_group_box)
+
+        # Créer une QGroupBox pour les "Mouvements"
+        movements_group_box = QtGui.QGroupBox('Mouvements', self)
+
+        # Créer un layout grid de 6 colonnes et 3 lignes
+        grid_layout = QtGui.QGridLayout()
+        
+        #TOUT LES BOUTONS ALED
+        #Normal
+        b1 = QtGui.QPushButton("L", self)
+        b1.clicked.connect(lambda: appliquer_mouvement_3D(rubik_3d,("L",True,False),True))
+        grid_layout.addWidget(b1, 0, 0)
+        
+        b2 = QtGui.QPushButton("F", self)
+        b2.clicked.connect(lambda: appliquer_mouvement_3D(rubik_3d,("F",True,False),True))
+        grid_layout.addWidget(b2, 0, 1)
+
+        b3 = QtGui.QPushButton("R", self)
+        b3.clicked.connect(lambda: appliquer_mouvement_3D(rubik_3d,("R",True,False),True))
+        grid_layout.addWidget(b3, 0, 2)
+
+        b4 = QtGui.QPushButton("U", self)
+        b4.clicked.connect(lambda: appliquer_mouvement_3D(rubik_3d,("U",True,False),True))
+        grid_layout.addWidget(b4, 0, 3)
+
+        b5 = QtGui.QPushButton("D", self)
+        b5.clicked.connect(lambda: appliquer_mouvement_3D(rubik_3d,("D",True,False),True))
+        grid_layout.addWidget(b5, 0, 4)
+
+        b6 = QtGui.QPushButton("B", self)
+        b6.clicked.connect(lambda: appliquer_mouvement_3D(rubik_3d,("B",True,False),True))
+        grid_layout.addWidget(b6, 0, 5)
+
+        #Inverse
+        b7 = QtGui.QPushButton("L'", self)
+        b7.clicked.connect(lambda: appliquer_mouvement_3D(rubik_3d,("L",False,False),True))
+        grid_layout.addWidget(b7, 1, 0)
+        
+        b8 = QtGui.QPushButton("F'", self)
+        b8.clicked.connect(lambda: appliquer_mouvement_3D(rubik_3d,("F",False,False),True))
+        grid_layout.addWidget(b8, 1, 1)
+
+        b9 = QtGui.QPushButton("R'", self)
+        b9.clicked.connect(lambda: appliquer_mouvement_3D(rubik_3d,("R",False,False),True))
+        grid_layout.addWidget(b9, 1, 2)
+
+        b10 = QtGui.QPushButton("U'", self)
+        b10.clicked.connect(lambda: appliquer_mouvement_3D(rubik_3d,("U",False,False),True))
+        grid_layout.addWidget(b10, 1, 3)
+
+        b11 = QtGui.QPushButton("D'", self)
+        b11.clicked.connect(lambda: appliquer_mouvement_3D(rubik_3d,("D",False,False),True))
+        grid_layout.addWidget(b11, 1, 4)
+
+        b12 = QtGui.QPushButton("B'", self)
+        b12.clicked.connect(lambda: appliquer_mouvement_3D(rubik_3d,("B",False,False),True))
+        grid_layout.addWidget(b12, 1, 5)
+
+        #Double
+        b13 = QtGui.QPushButton("L2", self)
+        b13.clicked.connect(lambda: appliquer_mouvement_3D(rubik_3d,("L",True,True),True))
+        grid_layout.addWidget(b13, 2, 0)
+        
+        b14 = QtGui.QPushButton("F2", self)
+        b14.clicked.connect(lambda: appliquer_mouvement_3D(rubik_3d,("F",True,True),True))
+        grid_layout.addWidget(b14, 2, 1)
+
+        b15 = QtGui.QPushButton("R2", self)
+        b15.clicked.connect(lambda: appliquer_mouvement_3D(rubik_3d,("R",True,True),True))
+        grid_layout.addWidget(b15, 2, 2)
+
+        b16 = QtGui.QPushButton("U2", self)
+        b16.clicked.connect(lambda: appliquer_mouvement_3D(rubik_3d,("U",True,True),True))
+        grid_layout.addWidget(b16, 2, 3)
+
+        b17 = QtGui.QPushButton("D2", self)
+        b17.clicked.connect(lambda: appliquer_mouvement_3D(rubik_3d,("D",True,True),True))
+        grid_layout.addWidget(b17, 2, 4)
+
+        b18 = QtGui.QPushButton("B2", self)
+        b18.clicked.connect(lambda: appliquer_mouvement_3D(rubik_3d,("B",True,True),True))
+        grid_layout.addWidget(b18, 2, 5)
+
+        # Ajouter le layout grid à la QGroupBox des "Mouvements"
+        movements_group_box.setLayout(grid_layout)
+
+        # Ajouter la QGroupBox des "Mouvements" au layout vertical de l'onglet 1
+        vertical_layout1.addWidget(movements_group_box)
+
+        # Ajouter l'onglet 1 au QTabWidget
+        tab_widget.addTab(tab1, "Cube")
+
+        # Onglet 2
+        tab2 = QtGui.QWidget()
+
+        # Créer un layout vertical dans l'onglet 2
+        vertical_layout2 = QtGui.QVBoxLayout(tab2)
+
+        # Ajouter un label à l'onglet 2
+        label = QtGui.QLabel('Ceci est l\'onglet Aide', self)
+        vertical_layout2.addWidget(label, alignment=QtCore.Qt.AlignTop)  # Aligner vers le haut
+
+        # Ajouter l'onglet 2 au QTabWidget
+        tab_widget.addTab(tab2, "Aide")
+
+        # Ajouter le QTabWidget au layout vertical principal
+        main_layout = QtGui.QVBoxLayout(self)
+        main_layout.addWidget(tab_widget)
+
+        # Redimensionner la fenêtre
+        self.resize(500, 300)
+
+# Fonction pour créer et afficher le dock
+def show_dock_widget():
+    # Créer une instance de la classe TestDialog
+    dialog = TestDialog()
+
+    # Créer un widget de dock
+    dock_widget = QtGui.QDockWidget("Rubik's cube", FreeCADGui.getMainWindow())
+    dock_widget.setWidget(dialog)
+
+    # Ajouter le widget de dock à FreeCAD
+    FreeCADGui.getMainWindow().addDockWidget(QtCore.Qt.RightDockWidgetArea, dock_widget)
+
+    # Afficher le widget de dock
+    dock_widget.show()
+
+show_dock_widget()
 
 Gui.ActiveDocument.ActiveView.viewIsometric()
 Gui.SendMsgToActiveView("ViewFit")

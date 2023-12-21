@@ -1,7 +1,17 @@
 import FreeCADGui
+from projet_freecad import *
 from PySide import QtGui, QtCore
+from constantes import *
 
 class TestDialog(QtGui.QDialog):
+
+    def generer(TAILLE):
+        print("lol")
+
+    def supprimer():
+        rubik = []
+        rubik_3d = []
+
     def __init__(self):
         super(TestDialog, self).__init__()
 
@@ -52,15 +62,17 @@ class TestDialog(QtGui.QDialog):
         # HLayout avec un label "ou scramble" et une zone de texte
         hlayout3 = QtGui.QHBoxLayout()
         label4 = QtGui.QLabel('ou scramble', self)
-        line_edit = QtGui.QLineEdit(self)  # Utiliser QLineEdit au lieu de QTextEdit
+        line_edit = QtGui.QLineEdit(self)
         hlayout3.addWidget(label4)
         hlayout3.addWidget(line_edit)
         generation_layout.addLayout(hlayout3)
 
         # Trois boutons avec les nouveaux noms
         button1 = QtGui.QPushButton('Générer le cube', self)
+        button1.clicked.connect(self.generer(TAILLE))
         button2 = QtGui.QPushButton('Afficher le scramble', self)
         button3 = QtGui.QPushButton('Supprimer le cube', self)
+        button3.clicked.connect(self.supprimer())
         generation_layout.addWidget(button1)
 
         # HLayout pour les boutons "Save" et "Load"
@@ -145,6 +157,3 @@ def show_dock_widget():
 
     # Afficher le widget de dock
     dock_widget.show()
-
-# Appeler la fonction pour afficher le dock
-show_dock_widget()

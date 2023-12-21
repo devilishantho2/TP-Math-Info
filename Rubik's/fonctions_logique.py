@@ -63,10 +63,15 @@ def generer_rubik_scramble(scramble):
 	
 # applique au rubik en paramètre nb_mouvs mouvements aléatoires
 # retourne le scramble (liste de tuples des mouvements effectués)
-def melanger(rubik,nb_mouvs):
+def melanger(nb_mouvs):
 	
-	# TODO
-	return
+	melange = []
+	melange_texte = ""
+	for i in range(nb_mouvs):
+		m = (random.choice(["U","L","F","R","B","D"]),random.choice([True, False]),random.choice([True, False]))
+		melange.append(m)
+		melange_texte += m[0]+str("'"*m[1])+str("2"*m[2])+" "
+	return melange,melange_texte
 		
 	
 # retourne la couleur du cubelet correspondante à la face demandée
