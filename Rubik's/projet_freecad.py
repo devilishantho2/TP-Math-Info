@@ -1,6 +1,5 @@
 ## le projet Rubik sous forme de macro FreeCAD ##
 
-from constantes import *
 from fonctions_logique import *
 
 # API pour les animations
@@ -13,14 +12,15 @@ import FreeCADGui
 doc = FreeCAD.ActiveDocument
 doc = FreeCAD.newDocument()
 
-rubik = generer_rubik_termine()
+TAILLE = 3
+rubik = generer_rubik_termine(TAILLE)
 clr = {"R":(1.0,0.0,0.0),"G":(0.0,1.0,0.0),"B":(0.0,0.0,1.0),"Y":(1.0,0.835,0.0),"O":(1.0,0.349,0.0),"W":(1.0,1.0,1.0),"N":(0.0,0.0,0.0)}
 
 rubik_3d,rubik_3d_copie = [],[]
 v = 6
 n_melange = 0
 			
-def init_rubik(rubik):
+def init_rubik(rubik,TAILLE):
 	for z in range(TAILLE):
 		rubik_3d.append([])
 	for y in range(TAILLE):
@@ -37,7 +37,7 @@ def init_rubik(rubik):
 				rubik_3d[x][y][z][0].ViewObject.LineWidth = 5
 				rubik_3d[x][y][z][0].ViewObject.LineColor = (0,0,0)
 	
-def update_rubik(rubik):
+def update_rubik(rubik,TAILLE):
 	for x in range(TAILLE):
 		for y in range(TAILLE):
 			for z in range(TAILLE):
@@ -47,10 +47,10 @@ def update_rubik(rubik):
 				GaucheDroite = rubik[x][y][z][2]
 				rubik_3d[x][y][z][0].ViewObject.DiffuseColor=[clr[GaucheDroite],clr[GaucheDroite],clr[AvantArriere],clr[AvantArriere],clr[HautBas],clr[HautBas]]
 
-init_rubik(rubik)
-update_rubik(rubik)
+init_rubik(rubik,TAILLE)
+update_rubik(rubik,TAILLE)
 
-def copier_rubik_3d(rubik_3d):
+def copier_rubik_3d(rubik_3d,TAILLE):
 	copie = []
 	for x in range(TAILLE):
 		copie.append([])
@@ -73,7 +73,7 @@ def appliquer_mouvement_3D(rubik_3d,mouv,animation=True):
 
 		for m in range(1+mouv[2]*1):
 			for r in range(3-2*mouv[1]):
-				appliquer_rotation(rubik,"U")
+				appliquer_rotation(rubik,"U",TAILLE)
 	
 			if animation == True:		
 				for i in range(90//v):
@@ -87,7 +87,7 @@ def appliquer_mouvement_3D(rubik_3d,mouv,animation=True):
 						Draft.rotate(rubik_3d[x][y][TAILLE-1][0],(1-2*mouv[1])*90,center=App.Vector(TAILLE/2,TAILLE/2,TAILLE-0.5),axis=App.Vector(0,0,1),copy=False)
 				FreeCADGui.updateGui()
 	
-			copie = copier_rubik_3d(rubik_3d)
+			copie = copier_rubik_3d(rubik_3d,TAILLE)
 			if mouv[1]==True:
 				for x in range(TAILLE):
 					for y in range(TAILLE):	
@@ -102,13 +102,13 @@ def appliquer_mouvement_3D(rubik_3d,mouv,animation=True):
 					pos = rubik_3d[x][y][TAILLE-1][1]
 					Draft.rotate(rubik_3d[x][y][TAILLE-1][0],90,center=App.Vector(pos[0]+0.5,pos[1]+0.5,TAILLE+0.5),axis=App.Vector(0,0,1),copy=False)	
 	
-			update_rubik(rubik)
+			update_rubik(rubik,TAILLE)
 
 	if mouv[0] == "D":
 
 		for m in range(1+mouv[2]*1):
 			for r in range(3-2*mouv[1]):
-				appliquer_rotation(rubik,"D")
+				appliquer_rotation(rubik,"D",TAILLE)
 	
 			if animation == True:		
 				for i in range(90//v):
@@ -122,7 +122,7 @@ def appliquer_mouvement_3D(rubik_3d,mouv,animation=True):
 						Draft.rotate(rubik_3d[x][y][0][0],(2*mouv[1]-1)*90,center=App.Vector(TAILLE/2,TAILLE/2,TAILLE-0.5),axis=App.Vector(0,0,1),copy=False)
 				FreeCADGui.updateGui()
 	
-			copie = copier_rubik_3d(rubik_3d)
+			copie = copier_rubik_3d(rubik_3d,TAILLE)
 			if mouv[1]==False:
 				for x in range(TAILLE):
 					for y in range(TAILLE):	
@@ -137,13 +137,13 @@ def appliquer_mouvement_3D(rubik_3d,mouv,animation=True):
 					pos = rubik_3d[x][y][0][1]
 					Draft.rotate(rubik_3d[x][y][0][0],90,center=App.Vector(pos[0]+0.5,pos[1]+0.5,0.5),axis=App.Vector(0,0,1),copy=False)	
 	
-			update_rubik(rubik)
+			update_rubik(rubik,TAILLE)
 
 	if mouv[0] == "F":
 
 		for m in range(1+mouv[2]*1):
 			for r in range(3-2*mouv[1]):
-				appliquer_rotation(rubik,"F")
+				appliquer_rotation(rubik,"F",TAILLE)
 
 			if animation == True:		
 				for i in range(90//v):
@@ -157,7 +157,7 @@ def appliquer_mouvement_3D(rubik_3d,mouv,animation=True):
 						Draft.rotate(rubik_3d[x][0][z][0],(2*mouv[1]-1)*90,center=App.Vector(TAILLE/2,0,TAILLE/2),axis=App.Vector(0,1,0),copy=False)
 				FreeCADGui.updateGui()
 	
-			copie = copier_rubik_3d(rubik_3d)
+			copie = copier_rubik_3d(rubik_3d,TAILLE)
 			if mouv[1]==True:
 				for x in range(TAILLE):
 					for z in range(TAILLE):	
@@ -172,13 +172,13 @@ def appliquer_mouvement_3D(rubik_3d,mouv,animation=True):
 					pos = rubik_3d[x][0][z][1]
 					Draft.rotate(rubik_3d[x][0][z][0],90,center=App.Vector(pos[0]+0.5,0.5,pos[2]+0.5),axis=App.Vector(0,1,0),copy=False)	
 	
-			update_rubik(rubik)
+			update_rubik(rubik,TAILLE)
 
 	if mouv[0] == "B":
 
 		for m in range(1+mouv[2]*1):
 			for r in range(3-2*mouv[1]):
-				appliquer_rotation(rubik,"B")
+				appliquer_rotation(rubik,"B",TAILLE)
 	
 			if animation == True:		
 				for i in range(90//v):
@@ -192,7 +192,7 @@ def appliquer_mouvement_3D(rubik_3d,mouv,animation=True):
 						Draft.rotate(rubik_3d[x][TAILLE-1][z][0],(1-2*mouv[1])*90,center=App.Vector(TAILLE/2,TAILLE-0.5,TAILLE/2),axis=App.Vector(0,1,0),copy=False)
 				FreeCADGui.updateGui()
 	
-			copie = copier_rubik_3d(rubik_3d)
+			copie = copier_rubik_3d(rubik_3d,TAILLE)
 			if mouv[1]==False:
 				for x in range(TAILLE):
 					for z in range(TAILLE):	
@@ -207,13 +207,13 @@ def appliquer_mouvement_3D(rubik_3d,mouv,animation=True):
 					pos = rubik_3d[x][TAILLE-1][z][1]
 					Draft.rotate(rubik_3d[x][TAILLE-1][z][0],90,center=App.Vector(pos[0]+0.5,TAILLE-0.5,pos[2]+0.5),axis=App.Vector(0,1,0),copy=False)	
 	
-			update_rubik(rubik)
+			update_rubik(rubik,TAILLE)
 
 	if mouv[0] == "L":
 
 		for m in range(1+mouv[2]*1):
 			for r in range(3-2*mouv[1]):
-				appliquer_rotation(rubik,"L")
+				appliquer_rotation(rubik,"L",TAILLE)
 	
 			if animation == True:		
 				for i in range(90//v):
@@ -227,7 +227,7 @@ def appliquer_mouvement_3D(rubik_3d,mouv,animation=True):
 						Draft.rotate(rubik_3d[0][y][z][0],(2*mouv[1]-1)*90,center=App.Vector(0.5,TAILLE/2,TAILLE/2),axis=App.Vector(1,0,0),copy=False)
 				FreeCADGui.updateGui()
 	
-			copie = copier_rubik_3d(rubik_3d)
+			copie = copier_rubik_3d(rubik_3d,TAILLE)
 			if mouv[1]==True:
 				for y in range(TAILLE):
 					for z in range(TAILLE):	
@@ -242,13 +242,13 @@ def appliquer_mouvement_3D(rubik_3d,mouv,animation=True):
 					pos = rubik_3d[0][y][z][1]
 					Draft.rotate(rubik_3d[0][y][z][0],90,center=App.Vector(0.5,pos[1]+0.5,pos[2]+0.5),axis=App.Vector(1,0,0),copy=False)	
 	
-			update_rubik(rubik)
+			update_rubik(rubik,TAILLE)
 
 	if mouv[0] == "R":
 
 		for m in range(1+mouv[2]*1):
 			for r in range(3-2*mouv[1]):
-				appliquer_rotation(rubik,"R")
+				appliquer_rotation(rubik,"R",TAILLE)
 	
 			if animation == True:		
 				for i in range(90//v):
@@ -262,7 +262,7 @@ def appliquer_mouvement_3D(rubik_3d,mouv,animation=True):
 						Draft.rotate(rubik_3d[TAILLE-1][y][z][0],(1-2*mouv[1])*90,center=App.Vector(TAILLE-0.5,TAILLE/2,TAILLE/2),axis=App.Vector(1,0,0),copy=False)
 				FreeCADGui.updateGui()
 	
-			copie = copier_rubik_3d(rubik_3d)
+			copie = copier_rubik_3d(rubik_3d,TAILLE)
 			if mouv[1]==False:
 				for y in range(TAILLE):
 					for z in range(TAILLE):	
@@ -277,7 +277,7 @@ def appliquer_mouvement_3D(rubik_3d,mouv,animation=True):
 					pos = rubik_3d[TAILLE-1][y][z][1]
 					Draft.rotate(rubik_3d[TAILLE-1][y][z][0],90,center=App.Vector(TAILLE-0.5,pos[1]+0.5,pos[2]+0.5),axis=App.Vector(1,0,0),copy=False)	
 	
-			update_rubik(rubik)
+			update_rubik(rubik,TAILLE)
 
 
 
@@ -285,9 +285,9 @@ class TestDialog(QtGui.QDialog):
 
     def generer(self):
         global TAILLE, init_rubik, update_rubik, rubik, generer_rubik_termine
-        rubik = generer_rubik_termine()
-        init_rubik(rubik)
-        update_rubik(rubik)
+        rubik = generer_rubik_termine(TAILLE)
+        init_rubik(rubik,TAILLE)
+        update_rubik(rubik,TAILLE)
         Gui.SendMsgToActiveView("ViewFit")
         Gui.ActiveDocument.ActiveView.viewIsometric()
 

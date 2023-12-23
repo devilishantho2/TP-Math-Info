@@ -1,14 +1,14 @@
 ## le projet Rubik en interaction console (script executable) ##
 
-from constantes import *
 from fonctions_logique import *
 from fonctions_console import *
 from fonctions_debug import *
 
+TAILLE = 3
 run = True
 
-rubik = generer_rubik_termine()
-afficher_rubik(rubik)
+rubik = generer_rubik_termine(TAILLE)
+afficher_rubik(rubik,TAILLE)
 
 while run:
-    saisie_mouvements(rubik)
+    saisie_mouvements(rubik,TAILLE)

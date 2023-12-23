@@ -1,7 +1,6 @@
 ## fonctions implémentant la logique du projet : ##
 ## génération du cube, mélange, application des mouvements, vérifications de victoire, etc. ## 
 
-from constantes import *
 from fonctions_debug import *
 
 import random
@@ -10,7 +9,7 @@ import copy
 
 # génère et retourne un rubik's cube résolu
 # voir constantes.py pour la réprésentation
-def generer_rubik_termine():
+def generer_rubik_termine(TAILLE):
 	
 	rubik = []
 	for z in range(TAILLE):
@@ -42,7 +41,6 @@ def generer_rubik_termine():
 				rubik[x][y][z] = rubik[0][y][z][:2]+"N"
 			rubik[TAILLE-1][y][z] = rubik[0][y][z][:2]+"R"
 			
-	# TODO
 	return rubik
 
 
@@ -85,7 +83,7 @@ def c(cubelet,f):
 # la face retournée, une matrice à deux dimensions, est ordonnée comme si le rubik avait été déplié
 # f : lettre de la face à extraire, f = caractère (U,L,F,R,B,D)
 # note : ces fonctions ne modifient PAS l'orientation (couleur) des cubelets
-def extraire(rubik, f):
+def extraire(rubik, f, TAILLE):
 	
 	if f=="U":
 		return [[rubik[x][y][TAILLE-1] for y in range(TAILLE)] for x in range(TAILLE)]
@@ -111,10 +109,10 @@ def extraire(rubik, f):
 # face : matrice 2D de cubelets
 # sens : True pour horaire
 # double : True pour 180°
-def appliquer_rotation(rubik, face, sens=True, double=False):
+def appliquer_rotation(rubik, face, TAILLE, sens=True, double=False):
 	
 	if face=="F":
-		F = extraire(rubik,"F")
+		F = extraire(rubik,"F",TAILLE)
 		for x in range(TAILLE):
 			for z in range(TAILLE):
 				rubik[x][0][z] = F[x][TAILLE-1-z]
@@ -123,7 +121,7 @@ def appliquer_rotation(rubik, face, sens=True, double=False):
 				rubik[x][0][z] = rubik[x][0][z][2:]+rubik[x][0][z][1:2]+rubik[x][0][z][:1]
     
 	if face=="L":
-		F = extraire(rubik,"L")
+		F = extraire(rubik,"L",TAILLE)
 		for y in range(TAILLE):
 			for z in range(TAILLE):
 				rubik[0][TAILLE-1-y][TAILLE-1-z] = F[TAILLE-1-z][y]
@@ -132,7 +130,7 @@ def appliquer_rotation(rubik, face, sens=True, double=False):
 				rubik[0][y][z] = rubik[0][y][z][1:2]+rubik[0][y][z][:1]+rubik[0][y][z][2:]
 				
 	if face=="R":
-		F = extraire(rubik,"R")
+		F = extraire(rubik,"R",TAILLE)
 		for y in range(TAILLE):
 			for z in range(TAILLE):
 				rubik[TAILLE-1][y][z] = F[TAILLE-1-z][y]
@@ -141,7 +139,7 @@ def appliquer_rotation(rubik, face, sens=True, double=False):
 				rubik[TAILLE-1][y][z] = rubik[TAILLE-1][y][z][1:2]+rubik[TAILLE-1][y][z][:1]+rubik[TAILLE-1][y][z][2:]
 				
 	if face=="U":
-		F = extraire(rubik,"U")
+		F = extraire(rubik,"U",TAILLE)
 		for x in range(TAILLE):
 			for y in range(TAILLE):
 				rubik[TAILLE-1-x][TAILLE-1-y][TAILLE-1] = F[y][TAILLE-1-x]
@@ -150,7 +148,7 @@ def appliquer_rotation(rubik, face, sens=True, double=False):
 				rubik[x][y][TAILLE-1] = rubik[x][y][TAILLE-1][:1]+rubik[x][y][TAILLE-1][2:]+rubik[x][y][TAILLE-1][1:2]
 				
 	if face=="D":
-		F = extraire(rubik,"D")
+		F = extraire(rubik,"D",TAILLE)
 		for x in range(TAILLE):
 			for y in range(TAILLE):
 				rubik[x][y][0] = F[y][TAILLE-1-x]
@@ -159,7 +157,7 @@ def appliquer_rotation(rubik, face, sens=True, double=False):
 				rubik[x][y][0] = rubik[x][y][0][:1]+rubik[x][y][0][2:]+rubik[x][y][0][1:2]
 						
 	if face=="B":
-		F = extraire(rubik,"B")
+		F = extraire(rubik,"B",TAILLE)
 		for x in range(TAILLE):
 			for z in range(TAILLE):
 				rubik[x][TAILLE-1][z] = F[z][TAILLE-1-x]

@@ -2,7 +2,6 @@
 ## ces fonctions ne font pas partie du projet final ##
 ## ne les implémentez que si cela vous est utile, vous pouvez évidemment en ajouter d'autres ##
 
-from constantes import *
 from fonctions_logique import *
 
 # affiche un rubik en console en mode debug
@@ -21,7 +20,7 @@ from fonctions_logique import *
              # ~ WNO|YNN|YNR|
              # ~ WGO|YBN|YBR|
                   # ~ D
-def debug_rubik(rubik):
+def debug_rubik(rubik,TAILLE):
 			
     haut = []
     for y in range(TAILLE-1,-1,-1):

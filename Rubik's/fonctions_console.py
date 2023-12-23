@@ -1,6 +1,5 @@
 ## fonctions pour l'interface utilisateur en console ##
 
-from constantes import *
 from fonctions_logique import *
 
 # affiche un rubik en console
@@ -21,7 +20,7 @@ from fonctions_logique import *
     # ~ YYY
     # ~  D
 
-def afficher_rubik(rubik):
+def afficher_rubik(rubik,TAILLE):
     
     haut = []
     for y in range(TAILLE-1,-1,-1):
@@ -101,30 +100,30 @@ def saisie_valide(saisie):
 # 2 = 180°				
 # renvoie toujours un tuple valide (f, sens, double) : l'utilisateur est invité à recommencer sa saisie tant que celle-ci est invalide
 
-def saisie_mouvement(rubik):
+def saisie_mouvement(rubik,TAILLE):
     
     m = input('Entrez la rotation à effectuer (F|L|R|U|D|B)') #F'2 ou F2 ou F
     
     if saisie_valide(m):
         
         if len(m)==1:
-            appliquer_rotation(rubik,m)
+            appliquer_rotation(rubik,m,TAILLE)
             
         if len(m)==2:
             if m[1]=="'":
-                for k in range(3): appliquer_rotation(rubik,m[0]) 
+                for k in range(3): appliquer_rotation(rubik,m[0],TAILLE) 
             if m[1]=='2':
-                for k in range(2): appliquer_rotation(rubik,m[0])
+                for k in range(2): appliquer_rotation(rubik,m[0],TAILLE)
             
         if len(m)==3:
-            for k in range(2): appliquer_rotation(rubik,m[0])
+            for k in range(2): appliquer_rotation(rubik,m[0],TAILLE)
             
-        afficher_rubik(rubik)
+        afficher_rubik(rubik,TAILLE)
 
 
 # permet la saisie d'une suite de mouvements à effectuer		
 # renvoie toujours une liste de tuples valide (f, sens, double) : l'utilisateur est invité à recommencer sa saisie tant que celle-ci est invalide
-def saisie_mouvements(rubik):
+def saisie_mouvements(rubik,TAILLE):
 
     m = input('Entrez la rotation à effectuer (F|L|R|U|D|B)') #F'2 ou F2 ou F
     L = m.split(" ")
@@ -134,15 +133,15 @@ def saisie_mouvements(rubik):
         if saisie_valide(e):
             
             if len(e)==1:
-                appliquer_rotation(rubik,e)
+                appliquer_rotation(rubik,e,TAILLE)
                 
             if len(e)==2:
                 if e[1]=="'":
-                    for k in range(3): appliquer_rotation(rubik,e[0]) 
+                    for k in range(3): appliquer_rotation(rubik,e[0],TAILLE) 
                 if e[1]=='2':
-                    for k in range(2): appliquer_rotation(rubik,e[0])
+                    for k in range(2): appliquer_rotation(rubik,e[0],TAILLE)
             
             if len(e)==3:
-                for k in range(2): appliquer_rotation(rubik,e[0])
+                for k in range(2): appliquer_rotation(rubik,e[0],TAILLE)
                 
-        afficher_rubik(rubik)
+        afficher_rubik(rubik,TAILLE)
