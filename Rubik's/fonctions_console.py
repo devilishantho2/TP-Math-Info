@@ -111,7 +111,6 @@ def saisie_mouvement(rubik):
             appliquer_rotation(rubik,m)
             
         if len(m)==2:
-            print('test')
             if m[1]=="'":
                 for k in range(3): appliquer_rotation(rubik,m[0]) 
             if m[1]=='2':
@@ -138,7 +137,6 @@ def saisie_mouvements(rubik):
                 appliquer_rotation(rubik,e)
                 
             if len(e)==2:
-                print('test')
                 if e[1]=="'":
                     for k in range(3): appliquer_rotation(rubik,e[0]) 
                 if e[1]=='2':
