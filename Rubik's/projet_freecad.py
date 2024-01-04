@@ -316,9 +316,6 @@ class TestDialog(QtGui.QDialog):
 
         super(TestDialog, self).__init__()
 
-        # Définir la variable a
-        a = 1  # Vous pouvez définir la valeur initiale de "a" ici
-
         # Créer un QTabWidget
         tab_widget = QtGui.QTabWidget(self)
 
@@ -374,7 +371,6 @@ class TestDialog(QtGui.QDialog):
         button2.clicked.connect(lambda: self.scramble())
         button3 = QtGui.QPushButton('Supprimer le cube', self)
         button3.clicked.connect(lambda: self.supprimer())
-        generation_layout.addWidget(button1)
 
         # HLayout pour les boutons "Save" et "Load"
         hlayout_buttons = QtGui.QHBoxLayout()
@@ -382,10 +378,13 @@ class TestDialog(QtGui.QDialog):
         button_load = QtGui.QPushButton('Load', self)
         hlayout_buttons.addWidget(button_save)
         hlayout_buttons.addWidget(button_load)
+
+        generation_layout.addWidget(button1)        
+        generation_layout.addWidget(button3)
+        generation_layout.addWidget(button2)
         generation_layout.addLayout(hlayout_buttons)
 
-        generation_layout.addWidget(button2)
-        generation_layout.addWidget(button3)
+
 
         # Ajouter le layout vertical à la QGroupBox
         generation_group_box.setLayout(generation_layout)
