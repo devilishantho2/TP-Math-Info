@@ -9,6 +9,9 @@ import Draft # voir la méthode Draft.rotate()
 from PySide import QtCore, QtGui, QtWidgets
 import FreeCADGui
 
+#Pour la sauvegarde
+import json
+
 doc = FreeCAD.ActiveDocument
 doc = FreeCAD.newDocument()
 
@@ -19,7 +22,24 @@ clr = {"R":(1.0,0.0,0.0),"G":(0.0,1.0,0.0),"B":(0.0,0.0,1.0),"Y":(1.0,0.835,0.0)
 rubik_3d,rubik_3d_copie = [],[]
 v = 6
 n_melange = 0
-			
+
+def save():
+	dico = {"R" : rubik, "T" : TAILLE}
+	with open('data.json', 'w') as mon_fichier:
+		json.dump(dico, mon_fichier)
+
+def load():
+	global rubik, rubik_3d,TAILLE
+	rubik,rubik_3d = [], []
+	with open('data.json') as mon_fichier:
+    		dico = json.load(mon_fichier)
+	rubik = dico["R"]
+	TAILLE = dico["T"]
+	for obj in doc.Objects:
+		doc.removeObject(obj.Name)
+	init_rubik(rubik,TAILLE)
+	update_rubik(rubik,TAILLE)
+		
 def init_rubik(rubik,TAILLE):
 	for z in range(TAILLE):
 		rubik_3d.append([])
@@ -375,7 +395,9 @@ class TestDialog(QtGui.QDialog):
         # HLayout pour les boutons "Save" et "Load"
         hlayout_buttons = QtGui.QHBoxLayout()
         button_save = QtGui.QPushButton('Save', self)
+        button_save.clicked.connect(lambda: save())
         button_load = QtGui.QPushButton('Load', self)
+        button_load.clicked.connect(lambda: load())
         hlayout_buttons.addWidget(button_save)
         hlayout_buttons.addWidget(button_load)
 
